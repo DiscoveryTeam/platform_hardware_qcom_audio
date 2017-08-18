@@ -104,7 +104,7 @@ namespace android {
             line++;
         }
 
-        ALOGV("%s: %d sound cards detected", __func__, sndcardFdPair.size());
+        ALOGV("%s: %lu sound cards detected", __func__, sndcardFdPair.size());
         fclose(fp);
 
         return sndcardFdPair.size() > 0 ? true : false;
@@ -157,7 +157,7 @@ namespace android {
             }
         }
 
-        ALOGV("%s: %d audio device event detected",
+        ALOGV("%s: %lu audio device event detected",
                   __func__,
                   mAudioEvents.size());
 
@@ -343,7 +343,7 @@ namespace android {
               break;
            }
 
-           ALOGD("out of poll() for sound card state change, SNDCARD size=%d", mSndCardFd.size());
+           ALOGD("out of poll() for sound card state change, SNDCARD size=%lu", mSndCardFd.size());
            for (i = 0; i < mSndCardFd.size(); i++) {
                if (pfd[i].revents & POLLPRI) {
                    if (!read(pfd[i].fd, (void *)rd_buf, 8)) {
@@ -439,7 +439,7 @@ namespace android {
                 str += ",OFFLINE";
         }
         ALOGV("%s: notifyAudioSystem : %s", __func__, str.string());
-        AudioSystem::setParameters(0, str);
+        AudioSystem::setParameters(AUDIO_IO_HANDLE_NONE, str);
     }
 
     void AudioDaemon::notifyAudioSystemEventStatus(const char* event,
@@ -455,6 +455,6 @@ namespace android {
         else
             str += ",OFF";
         ALOGD("%s: notifyAudioSystemEventStatus : %s", __func__, str.string());
-        AudioSystem::setParameters(0, str);
+        AudioSystem::setParameters(AUDIO_IO_HANDLE_NONE, str);
     }
 }
